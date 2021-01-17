@@ -13,7 +13,10 @@ https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/04.1.ht
 */
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello All</h1>")
+	//fmt.Fprintf(w, "<h1>Hello All</h1>")
+	t, _ := template.Parsefiles("root.gtpl")
+	t.Execute()
+
 }
 
 func search(w http.ResponseWriter, r *http.Request) {
