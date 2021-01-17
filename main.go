@@ -26,8 +26,13 @@ func search(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
+		searchQuery := r.Form["searchQuery"]
 		// process data
-		fmt.Println("Search Query: ", r.Form["searchQuery"])
+		if searchQuery != nil {
+			fmt.Println("Search Query: ", searchQuery)
+		} else {
+			fmt.Println("Empty search query")
+		}
 		t.Execute(w, nil)
 
 	}
