@@ -1,0 +1,2 @@
+<h1>Great Success!</h1>
+<div class="tenor-gif-embed" data-postid="13625290" data-share-method="host" data-width="100%" data-aspect-ratio="1.3333333333333333"><a href="https://tenor.com/view/borat-very-nice-great-success-yes-gif-13625290">Borat Very GIF</a> from <a href="https://tenor.com/search/borat-gifs">Borat GIFs</a></div><script type="text/javascript" async src="https://tenor.com/embed.js"></script>

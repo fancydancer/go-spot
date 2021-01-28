@@ -1,0 +1,12 @@
+<html>
+   <h1>Search Results</h1>
+   
+   <table>
+      {{.}}
+      {{ range .tracks }}
+      <tr>
+         <td>{{ .Name }}</td>
+      </tr>
+      {{end}}
+   </table>
+</html>
