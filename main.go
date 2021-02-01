@@ -51,9 +51,13 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 func spotSearch(h http.HandlerFunc, token *oauth2.Token) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		
-		t,_ := template.ParseFiles("search.html")
+		t, err := template.ParseFiles("search.html")
+
 	
 		if r.Method == "GET" {
+			if err != nil {
+				fmt.Println(err)
+			}
 			t.Execute(w, nil)
 		} else {
 		
@@ -75,18 +79,33 @@ func spotSearch(h http.HandlerFunc, token *oauth2.Token) http.HandlerFunc {
 				results, err := client.Search(searchQuery, spotify.SearchTypePlaylist|spotify.SearchTypeAlbum|spotify.SearchTypeTrack|spotify.SearchTypeArtist)
 				//
 				var parsedResults = parseSpotifySearchResults(results)
+
+
+				// new spotifyTrack object
 				
+				tracks := make([]SpotifyTrack, 0) 
+				for _,item := range parsedResults.tracks {
+					fmt.Println(item.Name)
+					track := SpotifyTrack{item.Name, item.ID.String(), string(item.URI), item.Endpoint}
+					tracks = append(tracks, track)
+				}
+				
+				//tracks := parsedResults.tracks
+				//albums := parsedResults.albums
+				//playlists := parsedResults.playlists
+				//artists := parsedResults.artists
+				//firstSongName := parsedResults.tracks
 
-
-
-	
 				if err != nil {
 					fmt.Println("ope")
 					log.Println(err)
 				}
 
-				t,_ := template.ParseFiles("results.html")
-				t.Execute(w, parsedResults.tracks)
+				t, err := template.ParseFiles("results.html")
+				if err != nil {
+					fmt.Println(err)
+				}
+				t.Execute(w, tracks)
 	
 			} else {
 				fmt.Println("Empty search query")
@@ -104,14 +123,30 @@ type SpotifySearchResults struct {
 	artists []spotify.FullArtist
 }
 
-/* # custom functions */
-func parseSpotifySearchResults(searchResults *spotify.SearchResult) SpotifySearchResults{
 
+
+type SpotifyTrack struct {
+	Name string
+	ID string
+	URI string
+	Endpoint string 
+}
+
+
+/*func (uri *spotify.URI) String() string {
+	return string(*)
+}*/
+
+/* # custom functions */
+func parseSpotifySearchResults(searchResults *spotify.SearchResult) *SpotifySearchResults{
+
+	//spotResults := make([]SpotifySearchResults, 0)
+	
 	albums := make([]spotify.SimpleAlbum, 0)
 	playlists := make([]spotify.SimplePlaylist, 0)
 	tracks := make([]spotify.FullTrack, 0)
 	artists := make([]spotify.FullArtist, 0)
-
+	
 	
 	if searchResults.Albums != nil {
 		fmt.Println("Albums:")
@@ -146,7 +181,7 @@ func parseSpotifySearchResults(searchResults *spotify.SearchResult) SpotifySearc
 	}
 
 	spotResults := SpotifySearchResults{albums, playlists, tracks, artists}
-	return spotResults
+	return &spotResults
 	
 
 

@@ -1,11 +1,17 @@
 <html>
-   <h1>Search Results</h1>
-   
-   <table>
-      {{.}}
-      {{ range .tracks }}
+   <table>results
       <tr>
-         <td>{{ .Name }}</td>
+         <th>song</th>
+         <th>ID</th>
+         <th>URI</th>
+         <th>link</th>
+      </tr>
+      {{range .}}
+      <tr>
+         <td>{{.Name}}</td>
+         <td>{{.ID}}</td>
+         <td>{{.URI}}</td>
+         <td href="{{.Endpoint}}">{{.Endpoint}}</td>
       </tr>
       {{end}}
    </table>
